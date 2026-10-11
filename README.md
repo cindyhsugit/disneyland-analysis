@@ -1,3 +1,4 @@
+[[Watch the demo https://youtu.be/rYbNS5aMNdU]]
 # Disney California Adventure: Wait-Time Analysis
 
 How crowded is Disney California Adventure, when, and does the weather matter?
