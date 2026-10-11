@@ -5,20 +5,12 @@ from visuals import create_visuals
 # Define paths (matching your new folder structure)
 DATA_DIR = "dataset"
 
-park_names = {330339: "Disneyland", 336894: "California Adventure"}
-
 
 def load_data():
     print("📥 Loading Disneyland datasets...")
 
     # Load each CSV using pandas (think of a DataFrame like a powerful, queryable array of structs)
-    rides_df = pd.read_csv(os.path.join(DATA_DIR, "rides.csv"))
     wait_times_df = pd.read_csv(os.path.join(DATA_DIR, "disney_wait_times.csv"))
-    weather_df = pd.read_csv(os.path.join(DATA_DIR, "hourlyWeather.csv"))
-    park_sched_df = pd.read_csv(os.path.join(DATA_DIR, "parkSchedules.csv"))
-    park_sched_df2 = pd.read_csv(os.path.join(DATA_DIR, "parkSchedules_2024.csv"))
-
-    disney_rides_df = pd.read_csv(os.path.join(DATA_DIR, "disneyRideTimes.csv"))
 
     raw = pd.read_csv(
         os.path.join(DATA_DIR, "open-meteo-33.85N117.91W51m.csv"), skiprows=3
@@ -33,38 +25,13 @@ def load_data():
     )
     weather_df2.to_csv(os.path.join(DATA_DIR, "hourlyWeather_2024.csv"), index=False)
 
-    print(f"   - Loaded {len(rides_df)} rides")
     print(f"   - Loaded {len(wait_times_df)} wait time records")
-    print(f"   - Loaded {len(weather_df)} hourly weather records")
     print(f"   - Loaded {len(weather_df2)} hourly weather 2024 records")
-    print(f"   - Loaded {len(park_sched_df)} park schedule entries")
-    print(f"   - Loaded {len(disney_rides_df)} disney rides entries")
 
     return (
-        rides_df,
         wait_times_df,
-        weather_df,
         weather_df2,
-        park_sched_df,
-        park_sched_df2,
-        disney_rides_df,
     )
-
-
-def clean_data(disney_rides_df, weather_df, weather_df2):
-    print("🧹Cleaning & Trimming...\n")
-    # 1. Convert string timestamps to true Pandas Datetime objects
-    print("🔄 Converting string timestamps to Datetime objects...")
-    disney_rides_df["dateTime"] = pd.to_datetime(disney_rides_df["dateTime"])
-    weather_df["dateTime"] = pd.to_datetime(weather_df["dateTime"])
-    weather_df2["dateTime"] = pd.to_datetime(weather_df2["dateTime"])
-
-    # 2. Check missing values in key columns
-    print("\n🔍 Missing Value Audit:")
-    missing_counts = disney_rides_df[["waitMins", "status"]].isnull().sum()
-    print(missing_counts)
-
-    return disney_rides_df, weather_df, weather_df2
 
 
 def clean_2024(waits, weather_2024):
@@ -117,37 +84,15 @@ if __name__ == "__main__":
 
     build_park_schedule_2024()
 
-    rides, waits, weather, weather2, park_schedules, park_schedules2, disney_rides = (
-        load_data()
-    )
-
-    # Quick sanity check: Print the first few rows of rides
-    print("\n🚲 Sample Rides Data:")
-    print(rides.head(3))
+    waits, weather2 = load_data()
 
     # Quick sanity check: Print the first few rows of waits
     print("\n⏳ Sample waits Data:")
     print(waits.head(3))
 
     # Quick sanity check: Print the first few rows of weather
-    print("\n☀️ Sample weather Data:")
-    print(weather.head(3))
-
-    # Quick sanity check: Print the first few rows of weather
     print("\n☀️ Sample weather 2024 Data:")
     print(weather2.head(3))
-
-    # Quick sanity check: Print the first few rows of park_schedules
-    print("\n🎡 Sample park_schedules Data:")
-    print(park_schedules.head(3))
-
-    # Quick sanity check: Print the first few rows of park_schedules
-    print("\n🎡 Sample park_schedules 2024 Data:")
-    print(park_schedules2.head(3))
-
-    # Quick sanity check: Print the first few rows of disney_rides
-    print("\n🎢 Sample disney_rides Data:")
-    print(disney_rides.head(3))
 
     # Quick sanity check: Print the busiest rides on average
     print("\n⏱️ Top 5 Busiest Rides:")
@@ -156,7 +101,6 @@ if __name__ == "__main__":
     )
     print(avg_waits)
 
-    disney_rides, weather, weather2 = clean_data(disney_rides, weather, weather2)
     waits, weather2 = clean_2024(waits, weather2)
     print("\n✅ Milestone 2 cleaning complete!")
 
