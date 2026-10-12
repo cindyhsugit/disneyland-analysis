@@ -11,6 +11,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_auc_score, confusion_matrix
+from sklearn.metrics import classification_report
 from visuals import create_visuals
 
 # Define paths (matching your new folder structure)
@@ -182,6 +183,10 @@ def train_model(merged_data):
     print(
         f"Training completed in {train_duration:.2f} seconds ({train_duration / 60:.2f} minutes)."
     )
+    print(
+        f"classification_report {classification_report(y_test, model.predict(X_test))}"
+    )
+
     # Return the trained pipeline object back to main
     return model
 
