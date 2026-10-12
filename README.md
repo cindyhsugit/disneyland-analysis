@@ -11,7 +11,8 @@ graph LR
     C --> D[Scikit-Learn Pipeline <br> StandardScaler & OneHotEncoder]
     D --> E[Logistic Regression <br> 93.53% Accuracy]
     E --> F[Serialization <br> models/disney_wait_model.pkl]
-
+```
+    
 ### 🛠️ Engineering & Architectural Highlights
 
 To ensure code maintainability, prevent data leakage, and mirror real-world production standards, the pipeline incorporates:
